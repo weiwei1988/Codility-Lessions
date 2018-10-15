@@ -1,24 +1,49 @@
 def solution(A):
 
-    for p in range(len(A)):
+    if len(A) < 3:
+        i_min_d, avg_d = double_check(A)
+        return i_min_d
+    else:
+        i_min_d, avg_d = double_check(A)
+        i_min_t, avg_t = triple_check(A)
 
-        if p == 0: 
-            avg_1 = (A[0] + A[1]) / 2.0
-            avg_2 = (A[0] + A[1] + A[2]) / 3.0
+        if avg_d < avg_t:
+            return i_min_d
+        else:
+            return i_min_t
 
-            avg_min = min(avg_1, avg_2)
-            start_p = p
+def double_check(A):
 
-        elif p < len(A)-2:
-            avg_new_1 = (A[p] + A[p+1]) / 2.0
-            avg_new_2 = (A[p] + A[p+1] + A[p+2]) / 3.0
+    avg = (A[0] + A[1]) / 2.0
+    i_min = 0
 
-            avg_1 = min(avg_1, avg_new_1)
-            avg_2 = min(avg_2, avg_new_2)
+    for i in range(len(A)-1):
+        avg_new = (A[i] + A[i+1]) / 2.0
 
-            avg_min = (avg_1, avg_2)
-        
-        elif p > len(A)-2:
-            avg
+        if avg_new < avg:
+            i_min = i
+            avg = avg_new
 
+    return i_min, avg
 
+def triple_check(A):
+    avg = (A[0] + A[1] + A[2]) / 3.0
+    i_min = 0
+
+    for i in range(len(A)-2):
+        avg_new = (A[i] + A[i+1] + A[i+2]) / 3.0
+        if avg_new < avg:
+            i_min = i
+            avg = avg_new
+
+    return i_min, avg
+
+if __name__ == "__main__":
+    A = [-3, -5, -8, -4, -10]
+    i_min_1, avg_1 = double_check(A)
+    i_min_2, avg_2 = triple_check(A)
+    ans = solution(A)
+
+    print(i_min_1, avg_1)
+    print(i_min_2, avg_2)
+    print(ans)
